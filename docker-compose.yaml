@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db_mysql:
+    image: mariadb:latest
+    volumes:
+      - jobs_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_mysql
+    network_mode: host
+
+volumes:
+  jobs_mysql_data:
