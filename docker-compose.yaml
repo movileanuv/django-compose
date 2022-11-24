@@ -10,5 +10,9 @@ services:
       MYSQL_DATABASE: db_mysql
     network_mode: host
 
+  adminer:
+    image: adminer
+    network_mode: host
+
 volumes:
   jobs_mysql_data:
