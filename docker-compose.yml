@@ -1,0 +1,46 @@
+services:
+  web:
+    build: .
+    command: python src/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=test_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - DEBUG=1
+      - SECRET_KEY='django-insecure-5%b7q11k7!gfij#cm@7#qtb0&!7#cdj#!%r42epv-cil+#opd('
+    depends_on:
+      - db
+      - node
+  db:
+    container_name: pg_container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+  node:
+    container_name: node
+    user: node
+    image: node:18
+    volumes:
+      - .:/code
+      - ~/.npmrc:/home/node/.npmrc
+    working_dir: /code/src/theme/static_src
+    command: bash -c "npm install && npm run start"
+    tty: true
+#  pgadmin:
+#    container_name: pgadmin4_container
+#    image: dpage/pgadmin4
+#    restart: always
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+#      PGADMIN_DEFAULT_PASSWORD: root
+#    ports:
+#      - "5050:80"
